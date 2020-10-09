@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <script type="application/javascript">
+
+	var canvas;
+	var ctx;
+	
+	function createCanvas(){
+		//delete old canvas
+		var element = document.getElementById("canvas");
+		document.body.removeChild(element);
+		//create new one
+		canvas = document.createElement('canvas');
+		canvas.id = "canvas";
+		canvas.width = 500;
+		canvas.height = 500;
+		document.body.appendChild(canvas);
+		
+		if (canvas.getContext) {
+			ctx = canvas.getContext('2d');
+		// Draw border
+			ctx.beginPath();
+			ctx.moveTo(0,0);
+			ctx.lineTo(500,0);
+			ctx.lineTo(500,500);
+			ctx.lineTo(0,500);
+			ctx.closePath();
+			ctx.stroke(); 
+		}
+	}
+	
+    function draw(steps) {
+		createCanvas();
+		drawF(steps);
+      
+        // Recursive draw 
+        function drawF(step) {
+			if (step > 0) {
+				step = step-1; 
+				ctx.save();
+				ctx.save();
+				ctx.save();
+				// I (kairiajam virsutiniam kampe
+				if(step + 1 == steps){
+				  ctx.fillStyle = "rgb(127,0,255)";
+				}
+				ctx.transform(-0.5, 0, 0, -0.5, 250, 250); 
+				drawF(step); 
+				ctx.restore(); 
+				// II desiniajam virsutiniam kampe
+				if(step + 1 == steps){
+				  ctx.fillStyle = "rgb(0,0,255)";
+				}
+				ctx.transform(0.5, 0, 0, 0.5, 250, 0); 
+				drawF(step); 
+				ctx.restore();
+				// III desiniajam apatiniam kampe
+				if(step + 1 == steps){
+				  ctx.fillStyle = "rgb(0,128,255)";
+				}
+				ctx.transform(0, 0.5, 0.5, 0, 250, 250);  
+				drawF(step); 
+				ctx.restore();
+				// kairiajam apatiniam kampe
+				if(step + 1 == steps){
+				  ctx.fillStyle = "rgb(0,255,255)";
+				}
+				ctx.transform(0, 0.25, 0.25,  0, 125, 375);  
+				drawF(step); 
+			}
+			else drawT();    
+        }       
+
+        function drawT() {
+			ctx.beginPath();
+			
+			ctx.moveTo(0,0);
+			ctx.lineTo(0,500);
+			ctx.lineTo(500,500);
+			ctx.lineTo(500,300);
+			ctx.lineTo(200,300);
+			ctx.lineTo(200,0);
+			ctx.lineTo(0,0);
+			
+			ctx.fill();
+        }       
+    }
+  </script>
+ </head>
+ <body>
+   <h1>00 Fractal</h1>
+   <div>
+		<input type="number" id=stepNumber></input>
+		<button onclick="draw(document.getElementById('stepNumber').value);">Draw</button>
+   </div>
+   <canvas id="canvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
+ </body>
+</html>
