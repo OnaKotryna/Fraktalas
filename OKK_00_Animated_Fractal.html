@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <script type="application/javascript">
+	var canvas;
+	var ctx;
+	// Globalus kintamieji animacijai
+	var x = 0, y = 0, a = 0, xs = 1, ys = 1;
+	var tick = 0;
+	var frames = 100;
+	var animate;
+	var transformation;
+	function createCanvas(){
+		var element = document.getElementById("canvas");
+		document.body.removeChild(element);
+		canvas = document.createElement('canvas');
+		canvas.id = "canvas";
+		canvas.width = 500;
+		canvas.height = 500;
+		canvas.style.border = '1px solid #000000';
+		document.body.appendChild(canvas);
+      if (canvas.getContext) {
+		ctx = canvas.getContext('2d');
+      }
+	}
+	// FIguros piesimas
+	function draw_L() {
+		ctx.beginPath();
+			ctx.moveTo(0,0);
+			ctx.lineTo(0,500);
+			ctx.lineTo(500,500);
+			ctx.lineTo(500,350);
+			ctx.lineTo(170,370);
+			ctx.lineTo(250,0);
+			ctx.lineTo(0,0);
+		ctx.fill();
+	}   
+	// Atrenkama, kuria transformacija animuot
+	function animateT(){
+		if(transformation == 1){
+			tick++;
+			checkTicks();
+			T_1();
+		} else if(transformation == 2){
+			tick++;
+			checkTicks();
+			T_2();
+		} else if(transformation == 3){
+			tick++;
+			checkTicks();
+			T_3();
+		} else if(transformation == 4){
+			tick++;
+			checkTicks();
+			T_4();
+		}
+	}
+	// Transformacijos piesimas
+	function draw_T(colour) {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.save();
+		ctx.fillStyle = colour;
+		ctx.translate(x, y);
+		ctx.rotate((a * Math.PI) / 180);
+		ctx.scale(xs,ys);
+		draw_L();
+		ctx.restore();   
+	}
+	// Transformaciju skaiciavimas
+	function T_1(){
+		if(x < 250 && y < 250){
+			x += 250 / frames;
+			y += 250 / frames;
+		} 
+		if(a < 180){
+			a += 180 / frames;
+		}
+		if(xs > 0.5 && ys > 0.5){
+			xs -= 0.5 / frames;
+			ys -= 0.5 / frames;
+		}
+		draw_T("rgb(127,0,255)");
+	}
+	function T_2(){
+		if(x < 250){
+			x += 250 / frames;
+		}
+		if(xs > 0.5 && ys > 0.5){
+			xs -= 0.5 / frames;
+			ys -= 0.5 / frames;
+		}
+		draw_T("rgb(0,0,255)");
+	}
+	function T_3(){
+		if(x < 250 && y < 250){
+			x += 250 / frames;
+			y += 250 / frames;
+		} 
+		if(a > -90){
+			a -= 90 / frames;
+		}
+		if(xs > -0.5){
+			xs -= 0.5 / (frames/3);
+		}
+		if(ys > 0.5){
+			ys -= 0.5 / frames;
+		}
+		draw_T("rgb(0,128,255)");
+	}
+	function T_4(){
+		if(x < 125)
+			x += 125 / frames;
+		if(y < 375)
+			y += 375 / frames;
+		if(a > -90){
+			a -= 90 / frames;
+		}
+		if(xs > -0.25){
+			xs -= 0.25 / (frames/5);
+		}
+		if(ys > 0.25){
+			ys -= 0.25 / (frames/4);
+		}
+		draw_T("rgb(0,255,255)");		
+	}
+	// Animacijos piesimas
+	function runAnimation(){
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		animateT();
+		if(animate) requestAnimationFrame(runAnimation);
+	}
+	// Pasiruosimas animacijai
+	function startTransformation(tr){
+		transformation = tr;
+		createCanvas();
+		x = 0; y = 0; a = 0;
+		xs = 1; ys = 1;
+		animate = true;
+		runAnimation();
+	}
+	//Pagalbines funkcijos
+	function checkTicks(){
+		if(tick == frames) {
+			animate = false;
+			tick = 0;
+		}
+	}
+  </script>
+ </head>
+ <body onload="createCanvas();draw_L();">
+   <h1>00 Animated Tranformations</h1>
+   
+   <div>
+	<button onclick="createCanvas();draw_L();">Figura</button>
+	<button onclick="startTransformation(1);">I tranformacija</button>
+	<button onclick="startTransformation(2);">II tranformacija</button>
+	<button onclick="startTransformation(3);">III tranformacija</button>
+	<button onclick="startTransformation(4);">IV tranformacija</button>
+   </div>
+   <canvas id="canvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
+ </body>
+</html>
