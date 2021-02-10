@@ -1,5 +1,5 @@
 # Fractal and Transformation animation
-Fractal.html - generates and draws a fractal according to a selected number of steps.
+Fractal.html - generates and draws a fractal according to a selected number of steps.  
 Animated_Fractal.html - animates 4 fractal transformations
 
 ## 4 transformations:
